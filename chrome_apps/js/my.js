@@ -1,4 +1,6 @@
 connectionId = -1;
+// loopInfiniteNum = 0; 没になったループブロックに必要？　没？
+forVar = "I"; // くりかえしブロックで使うFORコマンドの変数を異なるようにする
 
 var blocklyArea = document.getElementById("blocklyArea");
 var blocklyDiv = document.getElementById("blocklyDiv");
@@ -305,6 +307,179 @@ function sendCommand(command) {
 
 document.getElementById("run").addEventListener("click", function(){sendCommand("RUN\n")}, false);
 
+document.getElementById("esc").addEventListener("click", function(){sendCharacter(27)}, false);
+
 document.getElementById("toggle").addEventListener("click", function() {
   setTimeout(onResize, 350);
 }, false);
+
+// ツールボックスの中身をラジオボタンに応じて書き換える
+function modeChange() {
+  var normal = document.forms.modeSelecter.normal.checked;
+  var evaluation = document.forms.modeSelecter.evaluation.checked;
+  var toolbox = document.getElementById("toolbox");
+  // ダブルクォーテーションの前と>の後にバックスラッシュを挿入
+  if (normal) {
+    toolbox.innerHTML = "<category name=\"出力\" colour=\"180\">\
+      <block type=\"led\">\</block>\
+      <block type=\"print\">\
+        <value name=\"arg\">\
+          <block type=\"string\">\
+            <field name=\"strings\">\HELLO</field>\
+          </block>\
+        </value>\
+      </block>\
+      <block type=\"beep\">\</block>\
+      <block type=\"play\">\</block>\
+      <block type=\"tempo\">\</block>\
+      <block type=\"out\">\</block>\
+      <block type=\"pwm\">\</block>\
+    </category>\
+    <category name=\"入力\" colour=\"210\">\
+      <block type=\"input\">\</block>\
+    </category>\
+    <category name=\"繰り返し\" colour=\"45\">\
+      <block type=\"for\">\</block>\
+    </category>\
+    <category name=\"条件分岐\" colour=\"0\">\
+      <block type=\"if\">\</block>\
+      <block type=\"if_else\">\</block>\
+    </category>\
+    <category name=\"計算\" colour=\"90\">\
+      <block type=\"let\">\</block>\
+      <block type=\"not\">\</block>\
+      <block type=\"number\">\</block>\
+      <block type=\"string\">\</block>\
+      <block type=\"calculation\">\</block>\
+      <block type=\"variable\">\</block>\
+      <block type=\"continuity\">\</block>\
+      <block type=\"label_arg\">\</block>\
+    </category>\
+    <category name=\"音符\" colour=\"260\">\
+      <block type=\"note_c\">\</block>\
+      <block type=\"note_d\">\</block>\
+      <block type=\"note_e\">\</block>\
+      <block type=\"note_f\">\</block>\
+      <block type=\"note_g\">\</block>\
+      <block type=\"note_a\">\</block>\
+      <block type=\"note_b\">\</block>\
+      <block type=\"note_r\">\</block>\
+      <block type=\"note_length\">\</block>\
+      <block type=\"semitone\">\</block>\
+      <block type=\"note_tempo\">\</block>\
+      <block type=\"note_length_init\">\</block>\
+      <block type=\"octave\">\</block>\
+      <block type=\"octave_updown\">\</block>\
+      <block type=\"note_loop\">\</block>\
+      <block type=\"note_end\">\</block>\
+    </category>\
+    <category name=\"関数\" colour=\"315\">\
+      <block type=\"btn\">\</block>\
+      <block type=\"rnd\">\</block>\
+      <block type=\"tick\">\</block>\
+      <block type=\"inkey\">\</block>\
+      <block type=\"chr\">\</block>\
+      <block type=\"asc\">\</block>\
+      <block type=\"scr\">\</block>\
+      <block type=\"in\">\</block>\
+      <block type=\"ana\">\</block>\
+    </category>\
+    <category name=\"その他\" colour=\"65\">\
+      <block type=\"wait\">\</block>\
+      <block type=\"goto\">\</block>\
+      <block type=\"label\">\</block>\
+      <block type=\"end\">\</block>\
+      <block type=\"cls\">\</block>\
+      <block type=\"locate\">\</block>\
+      <block type=\"clt\">\</block>\
+      <block type=\"scroll\">\</block>\
+    </category>";
+  }
+  if (evaluation) {
+    toolbox.innerHTML = "<category name=\"うごかす\" colour=\"180\">\
+      <block type=\"led_on_kids\">\</block>\
+      <block type=\"led_off_kids\">\</block>\
+      <block type=\"out_led_on\">\</block>\
+      <block type=\"out_led_off\">\</block>\
+      <block type=\"play\">\
+        <value name=\"note\">\
+          <block type=\"note_c\">\
+            <value name=\"nextNote\">\
+              <block type=\"note_d\">\
+                <value name=\"nextNote\">\
+                  <block type=\"note_e\">\</block>\
+                </value>\
+              </block>\
+            </value>\
+          </block>\
+        </value>\
+      </block>\
+      <block type=\"play_tune\">\</block>\
+      <block type=\"servo\">\</block>\
+      <block type=\"wait_kids\">\
+        <value name=\"second\">\
+          <block type=\"number\">\
+            <field name=\"num\">1</field>\
+          </block>\
+        </value>\
+      </block>\
+    </category>\
+    <category name=\"くりかえす\" colour=\"65\">\
+      <block type=\"loop_infinite\">\</block>\
+      <block type=\"loop_number\">\
+        <value name=\"number\">\
+          <block type=\"number\">\
+            <field name=\"num\">3</field>\
+          </block>\
+        </value>\
+      </block>\
+    </category>\
+    <category name=\"もし～なら\" colour=\"0\">\
+      <block type=\"if_kids\">\</block>\
+      <block type=\"if_else_kids\">\</block>\
+      <block type=\"btn_kids\">\</block>\
+      <block type=\"ana_infrared_sensor\">\</block>\
+      <block type=\"ana_light_sensor\">\</block>\
+    </category>\
+    <category name=\"音色\" colour=\"260\">\
+      <block type=\"note_c\">\</block>\
+      <block type=\"note_d\">\</block>\
+      <block type=\"note_e\">\</block>\
+      <block type=\"note_f\">\</block>\
+      <block type=\"note_g\">\</block>\
+      <block type=\"note_a\">\</block>\
+      <block type=\"note_b\">\</block>\
+      <block type=\"note_r_kids\">\</block>\
+      <block type=\"note_length\">\</block>\
+      <block type=\"semitone\">\</block>\
+      <block type=\"note_tempo\">\</block>\
+      <block type=\"note_length_init\">\</block>\
+      <block type=\"octave\">\</block>\
+      <block type=\"octave_updown\">\</block>\
+      <block type=\"note_loop\">\</block>\
+      <block type=\"note_end\">\</block>\
+    </category>";
+  }
+  workspace.updateToolbox(toolbox);
+};
+document.getElementById("modeSelecter").addEventListener("click", modeChange, false);
+
+// ツールボックスのフライアウトが開いた状態でモードを切り替えると、どこかクリックするまでフライアウトが残るのを防ぐ
+function settingEvent() {
+  var blocklyFlyout = document.getElementsByClassName("blocklyFlyout");
+  blocklyFlyout[0].style.display = "none"; // blocklyFlyoutはオブジェクトなので０番目の要素を使用
+};
+document.getElementById("settings").addEventListener("click", settingEvent , false);
+
+// 「ずっとくりかえす」ブロック用の処理 没？
+// function loopInfiniteCount() {
+//   loopInfiniteNum = 0;
+// };
+//
+// workspace.addChangeListener(loopInfiniteCount);
+
+function forVarCount() {
+  forVar = "I";
+};
+
+workspace.addChangeListener(forVarCount);
