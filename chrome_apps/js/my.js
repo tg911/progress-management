@@ -45,6 +45,14 @@ window.addEventListener('resize', onResize, false);
 onResize();
 Blockly.svgResize(workspace);
 
+// スタートブロックに接続されていないブロックは無効化する
+// メソッド化した方が良いかも？
+// 変数xmlはどっかと競合してないか？
+var xml = '<xml><block type="start" deletable="false"></block></xml>';
+Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
+workspace.addChangeListener(Blockly.Events.disableOrphans);
+//
+
 function showCode() {
   var outputArea = document.getElementById("outputArea");
   var code = Blockly.IchigoJamBASIC.workspaceToCode(workspace);
@@ -54,7 +62,13 @@ function showCode() {
 workspace.addChangeListener(showCode);
 
 function discard() {
+  // workspaceから全てのブロックを削除
   workspace.clear();
+
+  // スタートブロックだけ復活させる
+  var xml = '<xml><block type="start" deletable="false"></block></xml>';
+  Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
+  workspace.addChangeListener(Blockly.Events.disableOrphans);
 };
 
 document.getElementById("discardYes").addEventListener("click", discard, false);

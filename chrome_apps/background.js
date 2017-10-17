@@ -5,6 +5,8 @@ chrome.app.runtime.onLaunched.addListener(function() {
 			left: 0,
 			width: 1000,
 			height: 720
-		}
+		},
+		state: 'maximized'
 	});
-})
+
+});
